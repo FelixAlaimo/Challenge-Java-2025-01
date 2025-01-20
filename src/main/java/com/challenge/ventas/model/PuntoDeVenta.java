@@ -2,10 +2,10 @@ package com.challenge.ventas.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class PuntoDeVenta {
@@ -17,8 +17,16 @@ public class PuntoDeVenta {
 	private String name;
 	
 	private Date deletedDate;
-	
 
+	public PuntoDeVenta() {
+		// default empty constructor
+	}
+	
+	public PuntoDeVenta(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 	public Long getId() {
 		return id;
 	}

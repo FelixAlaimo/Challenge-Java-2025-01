@@ -1,5 +1,8 @@
 package com.challenge.ventas.model;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class CostoEntrePuntosDeVentaPk {
 	
 	private PuntoDeVenta puntoDeVentaA;

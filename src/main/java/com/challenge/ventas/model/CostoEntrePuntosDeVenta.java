@@ -1,7 +1,7 @@
 package com.challenge.ventas.model;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 
 @Entity
 public class CostoEntrePuntosDeVenta {
