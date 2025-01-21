@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS PUNTO_DE_VENTA (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(255),
+    deleted_date DATE
+);
+
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (1, 'CABA');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (2, 'GBA_1');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (3, 'GBA_2');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (4, 'Santa Fe');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (5, 'Córdoba');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (6, 'Misiones');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (7, 'Salta');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (8, 'Chubut');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (9, 'Santa Cruz');
+INSERT INTO PUNTO_DE_VENTA (id, name) VALUES (10, 'Catamarca');
