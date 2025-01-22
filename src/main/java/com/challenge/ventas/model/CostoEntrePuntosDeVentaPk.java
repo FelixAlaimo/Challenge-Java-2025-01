@@ -12,11 +12,11 @@ public class CostoEntrePuntosDeVentaPk implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@ManyToOne
-    @JoinColumn(name = "punto_de_venta_a_id")
+    @JoinColumn(name = "COST_A_PUNTO_ID")
 	private PuntoDeVenta puntoDeVentaA;
 	
 	@ManyToOne
-    @JoinColumn(name = "punto_de_venta_b_id")
+    @JoinColumn(name = "COST_B_PUNTO_ID")
 	private PuntoDeVenta puntoDeVentaB;
 	
 	public CostoEntrePuntosDeVentaPk() {

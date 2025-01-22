@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,10 +19,13 @@ public class PuntoDeVenta implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="PUNTO_ID")
 	private Long id;
 	
+	@Column(name="PUNTO_NAME")
 	private String name;
 	
+	@Column(name="PUNTO_DELETED_DATE")
 	private Date deletedDate;
 
 	public PuntoDeVenta() {

@@ -1,27 +1,35 @@
 version: '3.8'
 services:
   springboot-app:
-    build: .
+    image: ventas-app
+    container_name: ventas-app
     ports:
       - "8080:8080"
     environment:
       # MySQL configuration
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/ventasDB
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_PROFILES_ACTIVE=docker
+      - env=docker
     depends_on:
       - mysql-db
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    command: ["./wait-for-it.sh", "mysql-db:3306", "--", "java", "-jar", "ventasApp.jar"]
+    networks:
+      - challenge-java-2025-01_app-network
 
   mysql-db:
     image: mysql:8
+    container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ventasDB
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
     networks:
-      - app-network
+      - challenge-java-2025-01_app-network
 
 networks:
-  app-network:
+  challenge-java-2025-01_app-network:
     driver: bridge

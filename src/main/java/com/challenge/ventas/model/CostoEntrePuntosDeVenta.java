@@ -2,10 +2,13 @@ package com.challenge.ventas.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="COSTO_ENTRE_PUNTOS")
 public class CostoEntrePuntosDeVenta implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -13,6 +16,7 @@ public class CostoEntrePuntosDeVenta implements Serializable {
 	@EmbeddedId
 	private CostoEntrePuntosDeVentaPk id;
 	
+	@Column(name="COST_AMOUNT")
 	private int amount;
 	
 	public CostoEntrePuntosDeVenta() {

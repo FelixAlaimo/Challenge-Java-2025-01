@@ -32,8 +32,11 @@ public class JpaConfig {
 
 	@Bean(name = "dataSourceMySQL")
     DataSource dataSourceMySQL() {
+		String dbUrl = System.getProperty("env") != null && System.getProperty("env").equals("docker")
+	            ? "jdbc:mysql://mysql-db:3306/ventasDB"
+	            : "jdbc:mysql://localhost:3306/ventasDB";
         return DataSourceBuilder.create()
-                .url("jdbc:mysql://localhost:3306/ventasDB")
+                .url(dbUrl)
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .username("root")
                 .password("rootpassword")
@@ -69,7 +72,7 @@ public class JpaConfig {
 
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setGenerateDdl(true);
-        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
+        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
 
         LocalContainerEntityManagerFactoryBean factoryBean = builder
                 .dataSource(dataSource)
