@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.challenge.ventas.model.Acreditacion;
 import com.challenge.ventas.model.CostoEntrePuntosDeVenta;
 import com.challenge.ventas.model.CostoEntrePuntosDeVentaDTO;
 import com.challenge.ventas.model.CostoEntrePuntosDeVentaPk;
@@ -12,6 +13,7 @@ import com.challenge.ventas.model.PuntoDeVenta;
 import com.challenge.ventas.model.PuntoDeVentaDTO;
 import com.challenge.ventas.repository.cache.ICostoEntrePuntosDeVentaRepository;
 import com.challenge.ventas.repository.cache.IPuntoDeVentaRepository;
+import com.challenge.ventas.repository.persistence.IAcreditacionesRepository;
 
 import jakarta.annotation.PostConstruct;
 
@@ -23,6 +25,9 @@ public class VentasService {
 
 	@Autowired
 	private ICostoEntrePuntosDeVentaRepository costoEntrePuntosDeVentaRepository;
+	
+	@Autowired
+	private IAcreditacionesRepository acreditacionesRepository;
 	
 	@PostConstruct
 	public void init() {
@@ -100,6 +105,14 @@ public class VentasService {
 
 	public CostoEntrePuntosDeVenta saveOrUpdateCostoEntrePuntosDeVenta(CostoEntrePuntosDeVenta costo) {
 	    return costoEntrePuntosDeVentaRepository.save(costo);
+	}
+	
+	public List<Acreditacion> findAcreditaciones() {
+		return acreditacionesRepository.findAll();
+	}
+	
+	public Acreditacion saveOrUpdateAcreditacion(Acreditacion acreditacion) {
+		return acreditacionesRepository.save(acreditacion);
 	}
 
 }

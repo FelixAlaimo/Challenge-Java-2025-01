@@ -80,6 +80,7 @@ public class JpaConfig {
                 .persistenceUnit("mysql")
                 .build();
 
+        factoryBean.getJpaPropertyMap().put("hibernate.hbm2ddl.auto", "update");
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter);
 
         return factoryBean;
