@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "2463e7fa-480d-493f-804a-b72aeba15f8b",
+		"name": "Java Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7239951"
+	},
+	"item": [
+		{
+			"name": "Puntos De Venta",
+			"item": [
+				{
+					"name": "Consulta - ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ventas/punto-de-venta/consulta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ventas",
+								"punto-de-venta",
+								"consulta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta - Por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ventas/punto-de-venta/consulta/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ventas",
+								"punto-de-venta",
+								"consulta",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"pepe new\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ventas/punto-de-venta/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ventas",
+								"punto-de-venta",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 11,\r\n    \"name\" : \"nuevo nombre\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ventas/punto-de-venta/actualizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ventas",
+								"punto-de-venta",
+								"actualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ventas/punto-de-venta/borrar/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ventas",
+								"punto-de-venta",
+								"borrar",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Costos",
+			"item": [
+				{
+					"name": "Consulta - All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/costos/camino/consulta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"costos",
+								"camino",
+								"consulta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta - Entre 2 IDs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/costos/camino/consulta/:id1/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"costos",
+								"camino",
+								"consulta",
+								":id1",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id1",
+									"value": "1"
+								},
+								{
+									"key": "id2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta - Hacia 1 ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/costos/camino/consulta/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"costos",
+								"camino",
+								"consulta",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/costos/camino/borrar/:id1/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"costos",
+								"camino",
+								"borrar",
+								":id1",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id1",
+									"value": "1"
+								},
+								{
+									"key": "id2",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"puntoAId\" : 7,\r\n    \"puntoBId\" : 1,\r\n    \"costo\" : 22\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/costos/camino/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"costos",
+								"camino",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Acreditaciones",
+			"item": [
+				{
+					"name": "Consulta - ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/acreditaciones/consulta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acreditaciones",
+								"consulta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"puntoDeVentaId\" : 5,\r\n    \"importe\" : 33000\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/acreditaciones/carga",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acreditaciones",
+								"carga"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
