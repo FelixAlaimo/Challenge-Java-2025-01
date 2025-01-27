@@ -5,17 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.challenge.ventas.model.Acreditacion;
-import com.challenge.ventas.model.CostoEntrePuntosDeVenta;
-import com.challenge.ventas.model.CostoEntrePuntosDeVentaDTO;
-import com.challenge.ventas.model.CostoEntrePuntosDeVentaPk;
-import com.challenge.ventas.model.PuntoDeVenta;
-import com.challenge.ventas.model.PuntoDeVentaDTO;
-import com.challenge.ventas.repository.cache.ICostoEntrePuntosDeVentaRepository;
-import com.challenge.ventas.repository.cache.IPuntoDeVentaRepository;
-import com.challenge.ventas.repository.persistence.IAcreditacionesRepository;
+import com.challenge.ventas.cache.model.CostoEntrePuntosDeVenta;
+import com.challenge.ventas.cache.model.CostoEntrePuntosDeVentaDTO;
+import com.challenge.ventas.cache.model.CostoEntrePuntosDeVentaPk;
+import com.challenge.ventas.cache.model.PuntoDeVenta;
+import com.challenge.ventas.cache.model.PuntoDeVentaDTO;
+import com.challenge.ventas.cache.repository.ICostoEntrePuntosDeVentaRepository;
+import com.challenge.ventas.cache.repository.IPuntoDeVentaRepository;
+import com.challenge.ventas.persistence.model.Acreditacion;
+import com.challenge.ventas.persistence.repository.IAcreditacionesRepository;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Service
 public class VentasService {

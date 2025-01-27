@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.challenge.ventas.model.PuntoDeVenta;
-import com.challenge.ventas.model.PuntoDeVentaDTO;
+import com.challenge.ventas.cache.model.PuntoDeVenta;
+import com.challenge.ventas.cache.model.PuntoDeVentaDTO;
 import com.challenge.ventas.service.VentasService;
 
 import io.micrometer.common.util.StringUtils;

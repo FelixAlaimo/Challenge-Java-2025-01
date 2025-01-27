@@ -1,4 +1,4 @@
-package com.challenge.ventas.model;
+package com.challenge.ventas.cache.model;
 
 import java.io.Serializable;
 

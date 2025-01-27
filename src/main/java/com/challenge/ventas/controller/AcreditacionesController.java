@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.challenge.ventas.model.Acreditacion;
-import com.challenge.ventas.model.AcreditacionDTO;
-import com.challenge.ventas.model.PuntoDeVenta;
+import com.challenge.ventas.cache.model.PuntoDeVenta;
+import com.challenge.ventas.persistence.model.Acreditacion;
+import com.challenge.ventas.persistence.model.AcreditacionDTO;
 import com.challenge.ventas.service.VentasService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/acreditaciones")

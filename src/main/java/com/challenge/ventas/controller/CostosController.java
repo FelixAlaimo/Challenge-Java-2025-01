@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.challenge.ventas.model.CostoEntrePuntosDeVenta;
-import com.challenge.ventas.model.CostoEntrePuntosDeVentaDTO;
-import com.challenge.ventas.model.PuntoDeVenta;
+import com.challenge.ventas.cache.model.CostoEntrePuntosDeVenta;
+import com.challenge.ventas.cache.model.CostoEntrePuntosDeVentaDTO;
+import com.challenge.ventas.cache.model.PuntoDeVenta;
 import com.challenge.ventas.service.VentasService;
 
 @RestController
