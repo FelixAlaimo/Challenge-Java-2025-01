@@ -3,12 +3,16 @@ services:
   springboot-app:
     image: ventas-app
     container_name: ventas-app
+    restart: on-failure  
     ports:
       - "8080:8080"
     environment:
-      # MySQL configuration
       - SPRING_PROFILES_ACTIVE=docker
       - env=docker
+      - WAIT_HOSTS=mysql:3307
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
     depends_on:
       - mysql-db
     command: ["java", "-jar", "ventasApp.jar"]
@@ -19,12 +23,10 @@ services:
     image: mysql:8
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ventasDB
-    volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - challenge-java-2025-01_app-network
 
