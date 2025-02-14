@@ -1,5 +1,6 @@
 package com.challenge.ventas.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class CostosController {
 			return "Para buscar el costo entre dos puntos se requiere el ID de ambos puntos de venta.";
 		}
 		
-		if (id1 == id2) {
-			return "el costo entre un punto y si mismo se presume irrisorio (0)";
+		if (id1.equals(id2)) {
+			return "El costo entre un punto y si mismo se presume irrisorio (0)";
 		}
 		
 		CostoEntrePuntosDeVentaDTO costo = ventasService.findCostoEntrePuntosDeVentaDto(Arrays.asList(id1, id2));
@@ -51,7 +52,7 @@ public class CostosController {
 	@GetMapping("/camino/consulta/{id}")
 	public List<CostoEntrePuntosDeVentaDTO> getCostosHaciaPuntoDeVenta(@PathVariable Long id) {
 		if (id == null) {
-			return null;
+			return new ArrayList<>();
 		}
 		
 		return ventasService.findCostosHaciaUnPuntoDeVentaDto(id);
@@ -63,7 +64,7 @@ public class CostosController {
 			return "Para BORRAR el costo entre dos puntos se requiere el ID de ambos puntos de venta.";
 		}
 		
-		if (id1 == id2) {
+		if (id1.equals(id2)) {
 			return "No se puede borrar el costo entre un punto y si mismo, ya que se presume irrisorio (0)";
 		}
 

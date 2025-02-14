@@ -25,7 +25,7 @@ public class Acreditacion implements Serializable {
 	private Long puntoDeVentaId;
 	
 	@Column(name="ACRE_PUNTO_NAME")
-	private String puntoDeVentaname;
+	private String puntoDeVentaName;
 	
 	@Column(name="ACRE_DATE")
 	private Date acreditacionDate;
@@ -37,9 +37,9 @@ public class Acreditacion implements Serializable {
 		// default empty constructor
 	}
 	
-	public Acreditacion(Long puntoDeVentaId, String puntoDeVentaname, Long importe) {
+	public Acreditacion(Long puntoDeVentaId, String puntoDeVentaName, Long importe) {
 		this.puntoDeVentaId = puntoDeVentaId;
-		this.puntoDeVentaname = puntoDeVentaname;
+		this.puntoDeVentaName = puntoDeVentaName;
 		this.acreditacionDate = new Date();
 		this.importe = importe;
 	}
@@ -58,11 +58,11 @@ public class Acreditacion implements Serializable {
 		this.puntoDeVentaId = puntoDeVentaId;
 	}
 
-	public String getPuntoDeVentaname() {
-		return puntoDeVentaname;
+	public String getPuntoDeVentaName() {
+		return puntoDeVentaName;
 	}
-	public void setPuntoDeVentaname(String puntoDeVentaname) {
-		this.puntoDeVentaname = puntoDeVentaname;
+	public void setPuntoDeVentaName(String puntoDeVentaName) {
+		this.puntoDeVentaName = puntoDeVentaName;
 	}
 
 	public Date getAcreditacionDate() {

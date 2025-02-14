@@ -12,7 +12,8 @@ bin/
 publish.properties
 .settings/
 .idea/
-.classpath
+*.classpath
+*.factorypath
 .project
 .externalToolBuilders/
 *segments*

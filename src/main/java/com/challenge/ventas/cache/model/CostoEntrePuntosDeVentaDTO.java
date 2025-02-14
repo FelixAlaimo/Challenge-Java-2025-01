@@ -12,14 +12,22 @@ public class CostoEntrePuntosDeVentaDTO implements Serializable {
 	private String puntoBName;
 	private int costo;
 
+	public CostoEntrePuntosDeVentaDTO() {
+		// default empty constructor
+	}
+	
+	public CostoEntrePuntosDeVentaDTO(int costo) {
+		this.costo = costo;
+	}
+
 	public CostoEntrePuntosDeVentaDTO(Long puntoAId, String puntoAName, Long puntoBId, String puntoBName, int costo) {
+		this(costo);
 		this.puntoAId = puntoAId;
 		this.puntoAName = puntoAName;
 		this.puntoBId = puntoBId;
 		this.puntoBName = puntoBName;
-		this.costo = costo;
 	}
-	
+
 	public Long getPuntoAId() {
 		return puntoAId;
 	}

@@ -14,8 +14,6 @@ import com.challenge.ventas.persistence.model.Acreditacion;
 import com.challenge.ventas.persistence.model.AcreditacionDTO;
 import com.challenge.ventas.service.VentasService;
 
-import jakarta.transaction.Transactional;
-
 @RestController
 @RequestMapping("/acreditaciones")
 public class AcreditacionesController {

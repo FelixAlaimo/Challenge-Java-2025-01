@@ -43,7 +43,7 @@ public class VentasController {
 		}
 		
 		PuntoDeVenta nuevoPuntoDeVenta = new PuntoDeVenta(puntoDeVentaDTO.getName());
-		ventasService.saveOrUpdatePuntoDeVenta(nuevoPuntoDeVenta);
+		nuevoPuntoDeVenta = ventasService.saveOrUpdatePuntoDeVenta(nuevoPuntoDeVenta);
 		return "Punto de venta creado OK: " + nuevoPuntoDeVenta.toString();
 	}
 

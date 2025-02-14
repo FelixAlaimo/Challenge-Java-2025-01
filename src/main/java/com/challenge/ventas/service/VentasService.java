@@ -16,7 +16,6 @@ import com.challenge.ventas.persistence.model.Acreditacion;
 import com.challenge.ventas.persistence.repository.IAcreditacionesRepository;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 
 @Service
 public class VentasService {
