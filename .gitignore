@@ -1,6 +1,7 @@
 target/
 target
 bin/
+*.gitconfig
 *.class
 *.jar
 *.war
