@@ -1,4 +1,4 @@
-package com.challenge.ventas.cache.model;
+package com.challenge.ventas.persistence.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,31 +12,31 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="PUNTO_DE_VENTA")
-public class PuntoDeVenta implements Serializable {
+@Table(name="SELLING_POINT")
+public class SellingPoint implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="PUNTO_ID")
+	@Column(name="SEPO_ID")
 	private Long id;
 	
-	@Column(name="PUNTO_NAME")
+	@Column(name="SEPO_NAME")
 	private String name;
 	
-	@Column(name="PUNTO_DELETED_DATE")
+	@Column(name="SEPO_DELETED_DATE")
 	private Date deletedDate;
 
-	public PuntoDeVenta() {
+	public SellingPoint() {
 		// default empty constructor
 	}
 	
-	public PuntoDeVenta(Long id) {
+	public SellingPoint(Long id) {
 		this.id = id;
 	}
 	
-	public PuntoDeVenta(String name) {
+	public SellingPoint(String name) {
 		this.name = name;
 	}
 	
@@ -82,7 +82,7 @@ public class PuntoDeVenta implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		PuntoDeVenta other = (PuntoDeVenta) obj;
+		SellingPoint other = (SellingPoint) obj;
 		return Objects.equals(id, other.id);
 	}
 	

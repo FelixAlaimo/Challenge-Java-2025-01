@@ -1,8 +1,8 @@
-package com.challenge.ventas.cache.model;
+package com.challenge.ventas.persistence.dto;
 
 import java.io.Serializable;
 
-public class PuntoDeVentaDTO implements Serializable {
+public class SellingPointDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -10,11 +10,11 @@ public class PuntoDeVentaDTO implements Serializable {
 	
 	private String name;
 	
-	public PuntoDeVentaDTO() {
+	public SellingPointDTO() {
 		// default empty constructor
 	}
 
-	public PuntoDeVentaDTO(Long id, String name) {
+	public SellingPointDTO(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}

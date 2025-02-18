@@ -1,4 +1,4 @@
-package com.challenge.ventas.cache.model;
+package com.challenge.ventas.persistence.model;
 
 import java.io.Serializable;
 
@@ -8,30 +8,30 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="COSTO_ENTRE_PUNTOS")
-public class CostoEntrePuntosDeVenta implements Serializable {
+@Table(name="COST_BETWEEN_SELLING_POINTS")
+public class CostBetweenSellingPoints implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private CostoEntrePuntosDeVentaPk id;
+	private CostBetweenSellingPointsPk id;
 	
 	@Column(name="COST_AMOUNT")
 	private int amount;
 	
-	public CostoEntrePuntosDeVenta() {
+	public CostBetweenSellingPoints() {
 		// default empty constructor
 	}
 	
-	public CostoEntrePuntosDeVenta(PuntoDeVenta puntoA, PuntoDeVenta puntoB, int amount) {
-		this.id = new CostoEntrePuntosDeVentaPk(puntoA, puntoB);
+	public CostBetweenSellingPoints(SellingPoint puntoA, SellingPoint puntoB, int amount) {
+		this.id = new CostBetweenSellingPointsPk(puntoA, puntoB);
 		this.amount = amount;
 	}
 
-	public CostoEntrePuntosDeVentaPk getId() {
+	public CostBetweenSellingPointsPk getId() {
 		return id;
 	}
-	public void setId(CostoEntrePuntosDeVentaPk id) {
+	public void setId(CostBetweenSellingPointsPk id) {
 		this.id = id;
 	}
 
