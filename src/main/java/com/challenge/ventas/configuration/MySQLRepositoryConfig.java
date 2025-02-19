@@ -1,8 +1,5 @@
 package com.challenge.ventas.configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +26,7 @@ import jakarta.persistence.EntityManagerFactory;
 public class MySQLRepositoryConfig {
 	
 	@Bean(name = "dataSourceMySQL")
-	@ConfigurationProperties(prefix = "spring.mysql.datasource")
+	@ConfigurationProperties(prefix = "spring.datasource")
     DataSource dataSourceMySQL() {
         return DataSourceBuilder.create().build();
     }
@@ -38,13 +35,8 @@ public class MySQLRepositoryConfig {
     LocalContainerEntityManagerFactoryBean entityManagerFactoryMySQL(EntityManagerFactoryBuilder builder,
             @Qualifier("dataSourceMySQL") DataSource dataSource) {
 
-		Map<String, Object> properties = new HashMap<>();
-		properties.put("hibernate.hbm2ddl.auto", "update");
-		properties.put("spring.jpa.properties.hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-
         return builder
                 .dataSource(dataSource)
-                .properties(properties)
                 .packages("com.challenge.ventas.persistence.model")
                 .persistenceUnit("mySQL")
                 .build();
