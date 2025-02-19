@@ -38,7 +38,7 @@ class AccreditationsControllerTest {
 	
 	@Test
 	public void testSaveNewAccreditation() {
-		String expectedResult = "No se procesó la carga de acreditación. Los campos 'puntoDeVentaId' e 'importe' son requeridos";
+		String expectedResult = "Warning! revisar campos requeridos: 'sellingPointId', 'amount'";
 		AccreditationDTO dto = null;
 		Assertions.assertEquals(expectedResult, controller.saveNewAccreditation(dto));
 		

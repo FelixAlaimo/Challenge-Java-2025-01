@@ -113,12 +113,11 @@ class SellingPointControllerTest {
 		expectedResult = "Punto de venta borrado OK: [id: 143, name: 'puntoABorrar']";
 		Assertions.assertNull(sellingPoint.getDeletedDate());
 		Assertions.assertEquals(expectedResult, controller.removeSellingPoint(10L));
-		Assertions.assertNotNull(sellingPoint.getDeletedDate());
+		Assertions.assertNull(sellingPoint.getDeletedDate());
 		
 		ArgumentCaptor<SellingPoint> captor = ArgumentCaptor.forClass(SellingPoint.class);
-		Mockito.verify(salesService, Mockito.times(1)).saveOrUpdateSellingPoint(captor.capture());
+		Mockito.verify(salesService, Mockito.times(1)).removeSellingPoint(captor.capture());
 		SellingPoint captP = captor.getValue();
-		Assertions.assertNotNull(captP.getDeletedDate());
 		Assertions.assertEquals(sellingPoint.getName(), captP.getName());
 		Assertions.assertEquals(sellingPoint.getId(), captP.getId());
 	}

@@ -29,7 +29,7 @@ public class AccreditationsController {
 	@PutMapping("/new")
     public String saveNewAccreditation(@RequestBody AccreditationDTO accreditationDTO) {
 		if (accreditationDTO == null || accreditationDTO.getSellingPointId() == null || accreditationDTO.getAmount() == null) {
-			return "No se procesó la carga de acreditación. Los campos 'puntoDeVentaId' e 'importe' son requeridos";
+			return "Warning! revisar campos requeridos: 'sellingPointId', 'amount'";
 		}
 		
 		SellingPoint sellingPoint = salesService.findSellingPoint(accreditationDTO.getSellingPointId());

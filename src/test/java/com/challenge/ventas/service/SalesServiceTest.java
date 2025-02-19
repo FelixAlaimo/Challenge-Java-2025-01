@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -32,19 +33,15 @@ class SalesServiceTest {
 	@Mock
 	private IAccreditationsRepository accreditationsRepo;
 	
+	@Captor
+	private ArgumentCaptor<List<Long>> listCaptor;
+	
 	@InjectMocks
 	private SalesService service;
 	
 	@BeforeAll
 	public void init() {
 		MockitoAnnotations.openMocks(this);
-	}
-	
-	@Test
-	public void testInit() {
-		service.init();
-		Mockito.verify(sellingPointRepo, Mockito.times(10)).saveAndFlush(Mockito.any());
-		Mockito.verify(costsRepo, Mockito.times(14)).save(Mockito.any());
 	}
 	
 	@Test
@@ -73,6 +70,14 @@ class SalesServiceTest {
 	}
 	
 	@Test
+	public void testRemoveSellingPoint() {
+		SellingPoint sellingPoint = new SellingPoint(383L);
+		service.removeSellingPoint(sellingPoint);
+		Mockito.verify(sellingPointRepo, Mockito.times(1)).save(sellingPoint);
+		Assertions.assertNotNull(sellingPoint.getDeletedDate());
+	}
+	
+	@Test
 	public void testFindCostBetweenSellingPointsDTO() {
 		service.findCostBetweenSellingPointsDTO();
 		Mockito.verify(costsRepo, Mockito.times(1)).findCostBetweenSellingPointsDTO();
@@ -86,9 +91,12 @@ class SalesServiceTest {
 	
 	@Test
 	public void testFindCostBetweenSellingPointsDTOByIds() {
-		List<Long> list = Arrays.asList(39L, 72L, 105L);
-		service.findCostBetweenSellingPointsDTOByIds(list);
-		Mockito.verify(costsRepo, Mockito.times(1)).findCostBetweenSellingPointsDTO(list);
+		service.findCostBetweenSellingPointsDTOByIds(39L, 72L);
+		Mockito.verify(costsRepo, Mockito.times(1)).findCostBetweenSellingPointsDTO(listCaptor.capture());
+		List<Long> captList = listCaptor.getValue();
+		Assertions.assertEquals(2, captList.size());
+		Assertions.assertTrue(captList.contains(72L));
+		Assertions.assertTrue(captList.contains(39L));
 	}
 	
 	@Test
@@ -105,9 +113,14 @@ class SalesServiceTest {
 	
 	@Test
 	public void testSaveCostBetweenSellingPoints() {
-		CostBetweenSellingPoints c = new CostBetweenSellingPoints(new SellingPoint(1111L), new SellingPoint(2222L), 7000);
-		service.saveCostBetweenSellingPoints(c);
-		Mockito.verify(costsRepo, Mockito.times(1)).save(c);
+		service.saveCostBetweenSellingPoints(1111L, 2222L, 7000);
+		ArgumentCaptor<CostBetweenSellingPoints> costCaptor = ArgumentCaptor.forClass(CostBetweenSellingPoints.class);
+		Mockito.verify(costsRepo, Mockito.times(1)).save(costCaptor.capture());
+		CostBetweenSellingPoints captCost = costCaptor.getValue();
+		List<Long> ids = Arrays.asList(1111L, 2222L);
+		Assertions.assertTrue(ids.contains(captCost.getId().getFromSellingPoint().getId()));
+		Assertions.assertTrue(ids.contains(captCost.getId().getToSellingPoint().getId()));
+		Assertions.assertEquals(7000, captCost.getAmount());
 	}
 	
 	@Test

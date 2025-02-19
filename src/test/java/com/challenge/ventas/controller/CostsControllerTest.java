@@ -1,6 +1,5 @@
 package com.challenge.ventas.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -8,14 +7,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
-import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
 import com.challenge.ventas.service.SalesService;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -51,7 +48,7 @@ class CostsControllerTest {
 		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(1L, 2L));
 		
 		expectedResult = "El costo entre ambos puntos de venta es: 2690";
-		Mockito.when(salesService.findCostBetweenSellingPointsDTOByIds(Arrays.asList(1L, 2L))).thenReturn(new CostBetweenSellingPointsDTO(2690));
+		Mockito.when(salesService.findCostBetweenSellingPointsDTOByIds(1L, 2L)).thenReturn(new CostBetweenSellingPointsDTO(2690));
 		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(1L, 2L));
 	}
 	
@@ -83,7 +80,7 @@ class CostsControllerTest {
 	
 	@Test
 	public void testCreateCostBetweenSellingPoints() {		
-		String expectedResult = "Warning! revisar campos requeridos: 'fromSellingPointId', 'toSellingPointId','cost'";
+		String expectedResult = "Warning! revisar campos requeridos: 'fromSellingPointId', 'toSellingPointId', 'cost'";
 		CostBetweenSellingPointsDTO costDto = null;
 		Assertions.assertEquals(expectedResult, controller.createCostBetweenSellingPoints(costDto));
 		
@@ -105,12 +102,7 @@ class CostsControllerTest {
 		expectedResult = "Solicitud exitosa de creacion de costo entre dos puntos de venta. En caso de existir, sera actualizado";
 		costDto.setCost(300);
 		Assertions.assertEquals(expectedResult, controller.createCostBetweenSellingPoints(costDto));
-		ArgumentCaptor<CostBetweenSellingPoints> captor = ArgumentCaptor.forClass(CostBetweenSellingPoints.class);
-		Mockito.verify(salesService, Mockito.times(1)).saveCostBetweenSellingPoints(captor.capture());
-		CostBetweenSellingPoints captC = captor.getValue();
-		Assertions.assertEquals(88L, captC.getId().getFromSellingPoint().getId());
-		Assertions.assertEquals(99L, captC.getId().getToSellingPoint().getId());
-		Assertions.assertEquals(300, captC.getAmount());
+		Mockito.verify(salesService, Mockito.times(1)).saveCostBetweenSellingPoints(88L, 99L, 300);
 	}
 
 }

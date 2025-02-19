@@ -42,9 +42,10 @@
 	    </dependency>
 	
 	    <dependency>
-	        <groupId>com.h2database</groupId>
-	        <artifactId>h2</artifactId>
-	    </dependency>
+		    <groupId>org.redisson</groupId>
+		    <artifactId>redisson-spring-boot-starter</artifactId>
+		    <version>3.44.0</version>
+		</dependency>
 	
 	    <dependency>
 	        <groupId>mysql</groupId>

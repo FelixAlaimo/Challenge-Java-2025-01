@@ -1,7 +1,6 @@
 package com.challenge.ventas.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
-import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
-import com.challenge.ventas.persistence.model.SellingPoint;
 import com.challenge.ventas.service.SalesService;
 
 @RestController
@@ -49,7 +46,7 @@ public class CostsController {
 			return "El costo entre un punto y si mismo se presume irrisorio (0)";
 		}
 		
-		CostBetweenSellingPointsDTO cost = salesService.findCostBetweenSellingPointsDTOByIds(Arrays.asList(id1, id2));
+		CostBetweenSellingPointsDTO cost = salesService.findCostBetweenSellingPointsDTOByIds(id1, id2);
 		
 		if (cost == null) {
 			return "No se encontró un costo directo entre ambos puntos de venta. Puede ser que no exista o que alguno de los puntos de venta se encuentre borrado.";
@@ -75,7 +72,7 @@ public class CostsController {
 	@PutMapping("/new")
 	public String createCostBetweenSellingPoints(@RequestBody CostBetweenSellingPointsDTO costDto) {
 		if (costDto == null || costDto.getFromSellingPointId() == null || costDto.getToSellingPointId() == null) {
-			return "Warning! revisar campos requeridos: 'fromSellingPointId', 'toSellingPointId','cost'";
+			return "Warning! revisar campos requeridos: 'fromSellingPointId', 'toSellingPointId', 'cost'";
 		}
 		if (costDto.getFromSellingPointId().equals(costDto.getToSellingPointId())) {
 			return "No se puede cambiar el costo entre un punto de venta y si mismo. Se considerará siempre irrisorio (0)";
@@ -84,8 +81,7 @@ public class CostsController {
 			return "El costo no puede tener un valor negativo";
 		}
 		
-		CostBetweenSellingPoints cost = new CostBetweenSellingPoints(new SellingPoint(costDto.getFromSellingPointId()), new SellingPoint(costDto.getToSellingPointId()), costDto.getCost());
-		salesService.saveCostBetweenSellingPoints(cost);
+		salesService.saveCostBetweenSellingPoints(costDto.getFromSellingPointId(), costDto.getToSellingPointId(), costDto.getCost());
 		return "Solicitud exitosa de creacion de costo entre dos puntos de venta. En caso de existir, sera actualizado";
 	}
 

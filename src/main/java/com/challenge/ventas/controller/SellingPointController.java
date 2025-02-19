@@ -1,6 +1,5 @@
 package com.challenge.ventas.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class SellingPointController {
 	@Autowired
 	private SalesService salesService;
 	
-	@GetMapping("/all")
+	@GetMapping("/consult")
     public List<SellingPointDTO> getAllSellingPoints() {
         return salesService.findActiveSellingPoint(); 
     }
@@ -74,8 +73,7 @@ public class SellingPointController {
 			return "El punto de venta ingresado no existe o se encuentra borrado";
 		}
 		
-        sellingPoint.setDeletedDate(new Date());
-        salesService.saveOrUpdateSellingPoint(sellingPoint);
+        salesService.removeSellingPoint(sellingPoint);
         return "Punto de venta borrado OK: " + sellingPoint.toString();
     }
 
