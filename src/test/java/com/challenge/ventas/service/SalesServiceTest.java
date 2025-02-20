@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.challenge.ventas.persistence.model.SaleAccreditation;
+import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
 import com.challenge.ventas.persistence.model.CostBetweenSellingPointsPk;
 import com.challenge.ventas.persistence.model.SellingPoint;
@@ -28,10 +29,15 @@ class SalesServiceTest {
 	
 	@Mock
 	private ISellingPointRepository sellingPointRepo;
+	
 	@Mock
 	private ICostBetweenSellingPointsRepository costsRepo;
+	
 	@Mock
 	private IAccreditationsRepository accreditationsRepo;
+	
+	@Mock
+	private PathFinderService pathFinderService;
 	
 	@Captor
 	private ArgumentCaptor<List<Long>> listCaptor;
@@ -90,13 +96,22 @@ class SalesServiceTest {
 	}
 	
 	@Test
-	public void testFindCostBetweenSellingPointsDTOByIds() {
-		service.findCostBetweenSellingPointsDTOByIds(39L, 72L);
+	public void testFindDirectCostBetweenSellingPointsDTOByIds() {
+		service.findDirectCostBetweenSellingPointsDTOByIds(39L, 72L);
 		Mockito.verify(costsRepo, Mockito.times(1)).findCostBetweenSellingPointsDTO(listCaptor.capture());
 		List<Long> captList = listCaptor.getValue();
 		Assertions.assertEquals(2, captList.size());
 		Assertions.assertTrue(captList.contains(72L));
 		Assertions.assertTrue(captList.contains(39L));
+	}
+	
+	
+	@Test
+	public void testFindShortestCostBetweenSellingPointsDTOByIds() {
+		List<CostBetweenSellingPointsDTO> currentCosts = Arrays.asList(new CostBetweenSellingPointsDTO(53));
+		Mockito.when(costsRepo.findCostBetweenSellingPointsDTO()).thenReturn(currentCosts);
+		service.findShortestCostBetweenSellingPointsDTOByIds(39L, 72L);
+		Mockito.verify(pathFinderService, Mockito.times(1)).findShortestPath(39L, 72L, currentCosts);
 	}
 	
 	@Test

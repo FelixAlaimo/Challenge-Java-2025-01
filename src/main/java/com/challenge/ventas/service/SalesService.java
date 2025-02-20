@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
+import com.challenge.ventas.persistence.dto.PathResultDTO;
 import com.challenge.ventas.persistence.dto.SellingPointDTO;
 import com.challenge.ventas.persistence.model.SaleAccreditation;
 import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
@@ -31,6 +32,9 @@ public class SalesService {
 	@Autowired
 	private IAccreditationsRepository accreditationsRepo;
 	
+	@Autowired
+	private PathFinderService pathFinderService;
+	
 	// ******** Selling points ********
 	@Cacheable(value = "sales:points", key = "'sales:points:active'")
 	public List<SellingPointDTO> findActiveSellingPoint() {
@@ -47,12 +51,12 @@ public class SalesService {
 		return sellingPointRepo.findSellingPoint(id);
 	}
 	
-	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:between", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
+	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
 	public SellingPoint saveOrUpdateSellingPoint(SellingPoint sellingPoint) {
 		return sellingPointRepo.save(sellingPoint);
 	}
 	
-	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:between", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
+	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
 	public SellingPoint removeSellingPoint(SellingPoint sellingPoint) {
 		sellingPoint.setDeletedDate(new Date());
 	    return sellingPointRepo.save(sellingPoint);
@@ -69,18 +73,24 @@ public class SalesService {
 		return costsRepo.findCostBetweenSellingPointsDTO(id);
 	}
 	
-	@Cacheable(value = "sales:cost:between", key = "#idFrom + ':' + #idTo")
-	public CostBetweenSellingPointsDTO findCostBetweenSellingPointsDTOByIds(Long idFrom, Long idTo) {
+	@Cacheable(value = "sales:cost:direct", key = "#idFrom + ':' + #idTo")
+	public CostBetweenSellingPointsDTO findDirectCostBetweenSellingPointsDTOByIds(Long idFrom, Long idTo) {
 		return costsRepo.findCostBetweenSellingPointsDTO(Arrays.asList(idFrom, idTo));
 	}
 	
-	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:between", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
+	@Cacheable(value = "sales:cost:shortest", key = "#idFrom + ':' + #idTo")
+	public PathResultDTO findShortestCostBetweenSellingPointsDTOByIds(Long idFrom, Long idTo) {
+		List<CostBetweenSellingPointsDTO> currentCosts = findCostBetweenSellingPointsDTO();
+		return pathFinderService.findShortestPath(idFrom, idTo, currentCosts);
+	}
+	
+	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
 	public void deleteCostBetweenSellingPoints(Long fromSellingPoint, Long toSellingPoint) {
 		CostBetweenSellingPointsPk pk = new CostBetweenSellingPointsPk(new SellingPoint(fromSellingPoint), new SellingPoint(toSellingPoint));
 		costsRepo.deleteById(pk);
 	}
 
-	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:between", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
+	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
 	public CostBetweenSellingPoints saveCostBetweenSellingPoints(Long fromSellingPoint, Long toSellingPoint, int cost) {
 		CostBetweenSellingPoints costBetweenPoints = new CostBetweenSellingPoints(new SellingPoint(fromSellingPoint), new SellingPoint(toSellingPoint), cost);
 	    return costsRepo.save(costBetweenPoints);

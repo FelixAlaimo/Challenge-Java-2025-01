@@ -1,5 +1,6 @@
 package com.challenge.ventas.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +14,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
+import com.challenge.ventas.persistence.dto.PathResultDTO;
+import com.challenge.ventas.persistence.dto.SellingPointDTO;
 import com.challenge.ventas.service.SalesService;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -36,30 +39,54 @@ class CostsControllerTest {
 	}
 	
 	@Test
-	public void testGetCostBetweenSellingPoints() {
+	public void testGetDirectCostBetweenSellingPoints() {
 		String expectedResult = "Warning! revisar campos requeridos: 'id' (de ambos puntos)";
-		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(null, 17L));
-		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(17L, null));
+		Assertions.assertEquals(expectedResult, controller.getDirectCostBetweenSellingPoints(null, 17L));
+		Assertions.assertEquals(expectedResult, controller.getDirectCostBetweenSellingPoints(17L, null));
 		
 		expectedResult = "El costo entre un punto y si mismo se presume irrisorio (0)";
-		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(17L, 17L));
+		Assertions.assertEquals(expectedResult, controller.getDirectCostBetweenSellingPoints(17L, 17L));
 		
 		expectedResult = "No se encontró un costo directo entre ambos puntos de venta. Puede ser que no exista o que alguno de los puntos de venta se encuentre borrado.";
-		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(1L, 2L));
+		Assertions.assertEquals(expectedResult, controller.getDirectCostBetweenSellingPoints(1L, 2L));
 		
-		expectedResult = "El costo entre ambos puntos de venta es: 2690";
-		Mockito.when(salesService.findCostBetweenSellingPointsDTOByIds(1L, 2L)).thenReturn(new CostBetweenSellingPointsDTO(2690));
-		Assertions.assertEquals(expectedResult, controller.getCostBetweenSellingPoints(1L, 2L));
+		expectedResult = "El costo del camino DIRECTO entre ambos puntos de venta es: 2690";
+		Mockito.when(salesService.findDirectCostBetweenSellingPointsDTOByIds(1L, 2L)).thenReturn(new CostBetweenSellingPointsDTO(2690));
+		Assertions.assertEquals(expectedResult, controller.getDirectCostBetweenSellingPoints(1L, 2L));
 	}
 	
 	@Test
-	public void testGetCostBetweenSellingPointsById() {
-		List<CostBetweenSellingPointsDTO> results = controller.getCostBetweenSellingPoints(null);
+	public void testGetShortestCostBetweenSellingPoints() {
+		String expectedResult = "Warning! revisar campos requeridos: 'id' (de ambos puntos)";
+		Assertions.assertEquals(expectedResult, controller.getShortestCostBetweenSellingPoints(null, 17L));
+		Assertions.assertEquals(expectedResult, controller.getShortestCostBetweenSellingPoints(17L, null));
+		
+		expectedResult = "Lon puntos ingresados no poseen conexión";
+		Assertions.assertEquals(expectedResult, controller.getShortestCostBetweenSellingPoints(7L, 2L));
+		
+		PathResultDTO mockedResultDto = new PathResultDTO();
+		Mockito.when(salesService.findShortestCostBetweenSellingPointsDTOByIds(7L, 2L)).thenReturn(mockedResultDto);
+		Assertions.assertEquals(expectedResult, controller.getShortestCostBetweenSellingPoints(7L, 2L));
+		
+		Mockito.when(salesService.findSellingPointDto(7L)).thenReturn(new SellingPointDTO(7L, "Point7name"));
+		Mockito.when(salesService.findSellingPointDto(3L)).thenReturn(new SellingPointDTO(3L, "Point3name"));
+		Mockito.when(salesService.findSellingPointDto(5L)).thenReturn(new SellingPointDTO(5L, "Point5name"));
+		Mockito.when(salesService.findSellingPointDto(2L)).thenReturn(new SellingPointDTO(2L, "Point2name"));
+		
+		mockedResultDto.setSellingPointsPath(Arrays.asList(7L, 3L, 5L, 2L));
+		mockedResultDto.setCost(82);
+		expectedResult = "El camino de menor costo es Point7name -> Point3name -> Point5name -> Point2name con costo 82";
+		Assertions.assertEquals(expectedResult, controller.getShortestCostBetweenSellingPoints(7L, 2L));
+	}
+	
+	@Test
+	public void testGetDirectCostBetweenSellingPointsById() {
+		List<CostBetweenSellingPointsDTO> results = controller.getDirectCostBetweenSellingPoints(null);
 		Assertions.assertNotNull(results);
 		Assertions.assertEquals(0, results.size());
 		Mockito.verify(salesService, Mockito.times(0)).findCostBetweenSellingPointsDTOById(Mockito.anyLong());
 		
-		controller.getCostBetweenSellingPoints(429L);
+		controller.getDirectCostBetweenSellingPoints(429L);
 		Mockito.verify(salesService, Mockito.times(1)).findCostBetweenSellingPointsDTOById(Mockito.anyLong());
 	}
 	
