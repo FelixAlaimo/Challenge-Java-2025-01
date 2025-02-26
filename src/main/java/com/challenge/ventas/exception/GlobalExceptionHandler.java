@@ -7,12 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice(basePackages = {"com.challenge.ventas.controller.impl"})
 public class GlobalExceptionHandler {
@@ -43,11 +40,6 @@ public class GlobalExceptionHandler {
         response.put("message", "Se esperaba un valor numerico pero no fue provisto correctamente.");
 
         return ResponseEntity.badRequest().body(response);
-    }
-    
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<Map<String, String>> handleMethodNotSupported(HttpServletRequest request, HttpRequestMethodNotSupportedException ex) {
-    	return buildErrorResponse("No mapping found for requestedURL '" +request.getRequestURL()+ "'. Error: " + ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     
     @ExceptionHandler(Exception.class)

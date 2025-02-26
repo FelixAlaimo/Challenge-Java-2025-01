@@ -27,6 +27,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ventasDB
+    command: --lower_case_table_names=1
     ports:
       - "3307:3306"
     networks:

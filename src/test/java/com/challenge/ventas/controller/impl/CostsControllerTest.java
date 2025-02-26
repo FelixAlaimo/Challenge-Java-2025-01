@@ -21,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.challenge.ventas.controller.impl.CostsController;
 import com.challenge.ventas.exception.BusinessRuleException;
 import com.challenge.ventas.exception.MissingRequiredFieldException;
 import com.challenge.ventas.exception.ResourceNotFoundException;

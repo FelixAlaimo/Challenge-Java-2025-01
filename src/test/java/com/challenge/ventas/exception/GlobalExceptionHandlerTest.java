@@ -6,61 +6,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.challenge.ventas.controller.impl.TestController;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(GlobalExceptionHandler.class)
-@Import(GlobalExceptionHandlerTest.TestController.class)
+@WebMvcTest(TestController.class)
+@Import(GlobalExceptionHandler.class)
 class GlobalExceptionHandlerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @RestController
-    @RequestMapping("/test")
-    static class TestController {
-
-        @GetMapping("/not-found")
-        public void throwNotFound() {
-            throw new ResourceNotFoundException("Resource not found");
-        }
-
-        @GetMapping("/bad-request")
-        public void throwBadRequest() {
-            throw new MissingRequiredFieldException("Missing required field");
-        }
-
-        @GetMapping("/business-rule")
-        public void throwBusinessRule() {
-            throw new BusinessRuleException("Business rule violated");
-        }
-
-        @GetMapping("/number-format")
-        public void throwNumberFormat() {
-            throw new NumberFormatException("Invalid number format");
-        }
-
-        @GetMapping("/method-not-supported")
-        public void throwMethodNotSupported(HttpServletRequest request) throws HttpRequestMethodNotSupportedException {
-            throw new HttpRequestMethodNotSupportedException(request.getMethod());
-        }
-
-        @GetMapping("/generic")
-        public void throwGeneric() {
-            throw new RuntimeException("Unexpected error");
-        }
-    }
 
     @Test
     void testResourceNotFoundException() throws Exception {
@@ -96,9 +54,8 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHttpRequestMethodNotSupportedException() throws Exception {
-        mockMvc.perform(post("/test/method-not-supported"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").exists());
+        mockMvc.perform(post("/test/number-format"))
+                .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
