@@ -20,5 +20,25 @@ class CostBetweenSellingPointsPkTest extends BasePojoTests {
 		Assertions.assertEquals(p1, pk.getFromSellingPoint());
 		Assertions.assertEquals(p2, pk.getToSellingPoint());
 	}
+	
+	@Test
+	public void testHashAndEquals() {
+		CostBetweenSellingPointsPk pk1 = new CostBetweenSellingPointsPk(new SellingPoint(1L, "one"), new SellingPoint(2L, "two"));
+		CostBetweenSellingPointsPk pk2 = new CostBetweenSellingPointsPk(new SellingPoint(1L, "one"), new SellingPoint(3L, "three"));
+		
+		Assertions.assertEquals(pk1, pk1);
+		Assertions.assertEquals(pk1.hashCode(), pk1.hashCode());
+		
+		Assertions.assertNotEquals(pk1, null);
+		
+		Assertions.assertNotEquals(pk1, pk2);
+		Assertions.assertNotEquals(pk1.hashCode(), pk2.hashCode());
+		
+		Assertions.assertNotEquals(pk1, 1L);
+		
+		pk2.setToSellingPoint(new SellingPoint(2L, "two-v2"));
+		Assertions.assertEquals(pk1, pk2);
+		Assertions.assertEquals(pk1.hashCode(), pk2.hashCode());
+	}
 
 }
