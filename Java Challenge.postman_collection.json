@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/selling-point/consult",
+							"raw": "http://localhost:{{port}}/selling-point/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -23,7 +23,7 @@
 							"port": "{{port}}",
 							"path": [
 								"selling-point",
-								"consult"
+								""
 							]
 						}
 					},
@@ -35,7 +35,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/selling-point/consult/:id",
+							"raw": "http://localhost:{{port}}/selling-point/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -43,7 +43,6 @@
 							"port": "{{port}}",
 							"path": [
 								"selling-point",
-								"consult",
 								":id"
 							],
 							"variable": [
@@ -59,7 +58,7 @@
 				{
 					"name": "Crear",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -71,7 +70,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/selling-point/new",
+							"raw": "http://localhost:{{port}}/selling-point/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -79,7 +78,7 @@
 							"port": "{{port}}",
 							"path": [
 								"selling-point",
-								"new"
+								""
 							]
 						}
 					},
@@ -92,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\" : 10,\r\n    \"name\" : \"nuevo nombre 7\"\r\n}",
+							"raw": "{\r\n    \"id\" : 15,\r\n    \"name\" : \"nuevo nombre 7\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -100,7 +99,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/selling-point/update",
+							"raw": "http://localhost:{{port}}/selling-point/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -108,7 +107,7 @@
 							"port": "{{port}}",
 							"path": [
 								"selling-point",
-								"update"
+								""
 							]
 						}
 					},
@@ -120,7 +119,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/selling-point/remove/:id",
+							"raw": "http://localhost:{{port}}/selling-point/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -128,13 +127,12 @@
 							"port": "{{port}}",
 							"path": [
 								"selling-point",
-								"remove",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "11"
+									"value": "13"
 								}
 							]
 						}
@@ -147,12 +145,12 @@
 			"name": "Costos",
 			"item": [
 				{
-					"name": "Consulta - All",
+					"name": "Todos los costos directos",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/costs/all",
+							"raw": "http://localhost:{{port}}/costs/direct/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -160,19 +158,20 @@
 							"port": "{{port}}",
 							"path": [
 								"costs",
-								"all"
+								"direct",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Consulta - Hacia 1 ID",
+					"name": "Costos directos hacia un punto",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/costs/selling-point-connections/:id",
+							"raw": "http://localhost:{{port}}/costs/direct/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -180,13 +179,13 @@
 							"port": "{{port}}",
 							"path": [
 								"costs",
-								"selling-point-connections",
+								"direct",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7"
+									"value": "3"
 								}
 							]
 						}
@@ -194,12 +193,12 @@
 					"response": []
 				},
 				{
-					"name": "Consulta - Costo directo",
+					"name": "Costo directo entre 2 puntos",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/costs/direct-path/:id1/:id2",
+							"raw": "http://localhost:{{port}}/costs/direct/:id1/:id2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -207,7 +206,70 @@
 							"port": "{{port}}",
 							"path": [
 								"costs",
-								"direct-path",
+								"direct",
+								":id1",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id1",
+									"value": "5"
+								},
+								{
+									"key": "id2",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Costo MINIMO entre 2 puntos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/costs/shortest/:id1/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"costs",
+								"shortest",
+								":id1",
+								":id2"
+							],
+							"variable": [
+								{
+									"key": "id1",
+									"value": "7"
+								},
+								{
+									"key": "id2",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/costs/:id1/:id2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"costs",
 								":id1",
 								":id2"
 							],
@@ -226,77 +288,13 @@
 					"response": []
 				},
 				{
-					"name": "Consulta - Costo minimo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:{{port}}/costs/shortest-path/:id1/:id2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "{{port}}",
-							"path": [
-								"costs",
-								"shortest-path",
-								":id1",
-								":id2"
-							],
-							"variable": [
-								{
-									"key": "id1",
-									"value": "1"
-								},
-								{
-									"key": "id2",
-									"value": "7"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Borrar",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:{{port}}/costs/remove/:id1/:id2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "{{port}}",
-							"path": [
-								"costs",
-								"remove",
-								":id1",
-								":id2"
-							],
-							"variable": [
-								{
-									"key": "id1",
-									"value": "7"
-								},
-								{
-									"key": "id2",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Crear",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"fromSellingPointId\" : 8,\r\n    \"toSellingPointId\" : 1,\r\n    \"cost\" : 300\r\n}",
+							"raw": "{\r\n    \"fromSellingPointId\" : 5,\r\n    \"toSellingPointId\" : 2,\r\n    \"cost\" : 50\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -304,7 +302,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/costs/new",
+							"raw": "http://localhost:{{port}}/costs/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -312,7 +310,7 @@
 							"port": "{{port}}",
 							"path": [
 								"costs",
-								"new"
+								""
 							]
 						}
 					},
@@ -329,7 +327,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/sale-accreditation/all",
+							"raw": "http://localhost:{{port}}/sale-accreditation/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -337,7 +335,7 @@
 							"port": "{{port}}",
 							"path": [
 								"sale-accreditation",
-								"all"
+								""
 							]
 						}
 					},
@@ -346,11 +344,11 @@
 				{
 					"name": "Crear",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"sellingPointId\" : 5,\r\n    \"amount\" : 55000\r\n\r\n}",
+							"raw": "{\r\n    \"sellingPointId\" : 23,\r\n    \"amount\" : 55000\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -358,7 +356,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/sale-accreditation/new",
+							"raw": "http://localhost:{{port}}/sale-accreditation/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -366,7 +364,7 @@
 							"port": "{{port}}",
 							"path": [
 								"sale-accreditation",
-								"new"
+								""
 							]
 						}
 					},
@@ -400,7 +398,7 @@
 	"variable": [
 		{
 			"key": "port",
-			"value": "8080",
+			"value": "6060",
 			"type": "string"
 		}
 	]

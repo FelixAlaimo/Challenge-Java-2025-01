@@ -5,9 +5,12 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,11 +24,9 @@ public class SaleAccreditation implements Serializable {
 	@Column(name="ACRE_ID")
 	private Long id;
 	
-	@Column(name="ACRE_SEPO_ID")
-	private Long sellingPointId;
-	
-	@Column(name="ACRE_SEPO_NAME")
-	private String sellingPointName;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name="ACRE_SEPO_ID", referencedColumnName = "SEPO_ID", nullable = false)
+	private SellingPoint sellingPoint;
 	
 	@Column(name="ACRE_AMOUNT")
 	private Long amount;
@@ -37,9 +38,8 @@ public class SaleAccreditation implements Serializable {
 		// default empty constructor
 	}
 
-	public SaleAccreditation(Long sellingPointId, String sellingPointName, Long amount) {
-		this.sellingPointId = sellingPointId;
-		this.sellingPointName = sellingPointName;
+	public SaleAccreditation(SellingPoint sellingPoint, Long amount) {
+		this.sellingPoint = sellingPoint;
 		this.amount = amount;
 		this.accreditationDate = new Date();
 	}
@@ -50,21 +50,14 @@ public class SaleAccreditation implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Long getSellingPointId() {
-		return sellingPointId;
-	}
-	public void setSellingPointId(Long sellingPointId) {
-		this.sellingPointId = sellingPointId;
-	}
-
-	public String getSellingPointName() {
-		return sellingPointName;
-	}
-	public void setSellingPointName(String sellingPointName) {
-		this.sellingPointName = sellingPointName;
-	}
 	
+	public SellingPoint getSellingPoint() {
+		return sellingPoint;
+	}
+	public void setSellingPoint(SellingPoint sellingPoint) {
+		this.sellingPoint = sellingPoint;
+	}
+
 	public Long getAmount() {
 		return amount;
 	}
@@ -77,6 +70,11 @@ public class SaleAccreditation implements Serializable {
 	}
 	public void setAccreditationDate(Date accreditationDate) {
 		this.accreditationDate = accreditationDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "[id: " + this.id + ", amount: " + this.amount + "] en el Punto de Venta: " + this.sellingPoint;
 	}
 
 }

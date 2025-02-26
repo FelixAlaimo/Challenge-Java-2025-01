@@ -1,6 +1,7 @@
 package com.challenge.ventas.persistence.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
@@ -40,6 +41,28 @@ public class CostBetweenSellingPointsPk implements Serializable {
 	}
 	public void setToSellingPoint(SellingPoint toSellingPoint) {
 		this.toSellingPoint = toSellingPoint;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.fromSellingPoint, this.toSellingPoint);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		CostBetweenSellingPointsPk other = (CostBetweenSellingPointsPk) obj;
+		return Objects.equals(this.fromSellingPoint, other.fromSellingPoint)
+				&& Objects.equals(this.toSellingPoint, other.toSellingPoint);
 	}
 
 }

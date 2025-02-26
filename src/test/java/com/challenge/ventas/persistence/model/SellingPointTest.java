@@ -13,11 +13,18 @@ class SellingPointTest extends BasePojoTests {
 	}
 	
 	@Test
-	public void testOverloadedConstrustor() {
+	public void testOverloadedConstructors() {
 		SellingPoint sellingPoint = new SellingPoint(1739L);
 		Assertions.assertEquals(1739L, sellingPoint.getId());
+		Assertions.assertNull(sellingPoint.getName());
+		
 		sellingPoint = new SellingPoint("selling POINT X");
+		Assertions.assertNull(sellingPoint.getId());
 		Assertions.assertEquals("selling POINT X", sellingPoint.getName());
+		
+		sellingPoint = new SellingPoint(444L, "selling POINT Z");
+		Assertions.assertEquals(444L, sellingPoint.getId());
+		Assertions.assertEquals("selling POINT Z", sellingPoint.getName());
 	}
 	
 	@Test

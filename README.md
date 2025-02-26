@@ -8,11 +8,7 @@
 -	MySql como base persistente:
 	--> Elegí esta base de datos por su simplicidad de uso y facilidad de conexión.
 -	App containerizada con Docker
--	Se consultan los endpoints a través de Postman
-
-# Consideraciones generales
--	Actualmente la aplicacion cubre los 3 puntos principales del challenge EXCEPTO el requerimiento de calcular el camino mas corto entre 2 puntos. Será trabajado como un NTH al final.
--	Posee mas del 95% de la aplicación testeada. No se encuentra al 100% ya que no se testearon las clases de configuracion (H2RepositoryConfig ni MySQLRepositoryConfig).
+-	Se consultan los endpoints a través de Postman. La app cuenta con documentacion Swagger para informacion mas detallada.
 
 # Pre-requisitos / supuestos:
 	1-> tener clonado el repo
@@ -31,4 +27,4 @@ Estando parados en el root del repo (donde se encuentra el archivo "Dockerfile" 
 	2-> Startear "ventas-app".
 
 # Cómo puede probarse la aplicación:
-	-- Se le puede pegar desde postman o similares, la colección de postman para utilizar presente en el base del repo ("Java Challenge.postman_collection.json").
+	-- Se le puede pegar desde postman o similares, la colección de postman para utilizar presente en el base del repo ("Java Challenge.postman_collection.json"). Ver http://localhost:{port}/swagger-ui/index.htm para informacion mas detallada.
