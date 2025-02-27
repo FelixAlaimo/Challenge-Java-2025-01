@@ -1,4 +1,4 @@
-package utils;
+package com.challenge.ventas.test.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import com.challenge.ventas.exception.BusinessRuleException;
 import com.challenge.ventas.exception.MissingRequiredFieldException;
 import com.challenge.ventas.exception.ResourceNotFoundException;
+import com.challenge.ventas.helper.SellingPointValidator;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
 import com.challenge.ventas.persistence.model.SellingPoint;
@@ -20,7 +21,6 @@ import com.challenge.ventas.persistence.repository.ICostBetweenSellingPointsRepo
 import com.challenge.ventas.service.ICostsBetweenSellingPointsService;
 import com.challenge.ventas.service.ISellingPointService;
 import com.challenge.ventas.utils.CostBetweenSellingPointsConverter;
-import com.challenge.ventas.utils.SellingPointValidator;
 
 @Service
 public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPointsService {
@@ -36,7 +36,7 @@ public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPoi
 	
 	@Override
 	@Cacheable(value = "sales:costs", key = "'sales:costs:active'")
-	public List<CostBetweenSellingPointsDTO> findCostBetweenSellingPointsDTOs() {
+	public List<CostBetweenSellingPointsDTO> findCostBetweenSellingPointsDTOs() throws ResourceNotFoundException {
 		List<CostBetweenSellingPointsDTO> costs = costsRepo.findCostBetweenSellingPointsDTO();
 		if (CollectionUtils.isEmpty(costs)) {
 			throw new ResourceNotFoundException("Actualmente no se posee informacion sobre costos entre puntos de venta");
@@ -46,7 +46,7 @@ public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPoi
 
 	@Override
 	@Cacheable(value = "sales:costs:to", key = "#sellingPointId")
-	public List<CostBetweenSellingPointsDTO> findCostBetweenSellingPointsDTOById(Long sellingPointId) {
+	public List<CostBetweenSellingPointsDTO> findCostBetweenSellingPointsDTOById(Long sellingPointId) throws ResourceNotFoundException, MissingRequiredFieldException {
 		
 		sellingPointValidator.validateSellingPointExistence(sellingPointId, "id");
 		
@@ -60,7 +60,7 @@ public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPoi
 
 	@Override
 	@Cacheable(value = "sales:cost:direct", key = "#fromSellingPointId + ':' + #toSellingPointId")
-	public CostBetweenSellingPointsDTO findDirectCostBetweenSellingPointsDTOByIds(Long fromSellingPointId, Long toSellingPointId) {
+	public CostBetweenSellingPointsDTO findDirectCostBetweenSellingPointsDTOByIds(Long fromSellingPointId, Long toSellingPointId) throws ResourceNotFoundException, MissingRequiredFieldException {
 		
 		sellingPointValidator.validateSellingPointExistence(fromSellingPointId, "id");
 		sellingPointValidator.validateSellingPointExistence(toSellingPointId, "id");
@@ -79,7 +79,7 @@ public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPoi
 
 	@Override
 	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
-	public void deleteCostBetweenSellingPoints(Long fromSellingPointId, Long toSellingPointId) {
+	public void deleteCostBetweenSellingPoints(Long fromSellingPointId, Long toSellingPointId) throws BusinessRuleException, ResourceNotFoundException, MissingRequiredFieldException {
 		
 		sellingPointValidator.validateSellingPointExistence(fromSellingPointId, "id");
 		sellingPointValidator.validateSellingPointExistence(toSellingPointId, "id");
@@ -97,7 +97,7 @@ public class CostsBetweenSellingPointsService implements ICostsBetweenSellingPoi
 
 	@Override
 	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
-	public String saveCostBetweenSellingPoints(CostBetweenSellingPointsDTO costDto) {
+	public String saveCostBetweenSellingPoints(CostBetweenSellingPointsDTO costDto) throws MissingRequiredFieldException, BusinessRuleException, ResourceNotFoundException {
 		
 		if (costDto == null) {
 			throw new MissingRequiredFieldException("Para establecer el costo entre dos puntos se requieren los campos 'fromSellingPointId', 'toSellingPointId' y 'cost'");

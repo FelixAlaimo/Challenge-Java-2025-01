@@ -26,7 +26,7 @@ public class AccreditationsService implements IAccreditationsService {
 	private ISellingPointService sellingPointService;
 	
 	@Override
-	public List<AccreditationDTO> findAccreditationDTOs() {
+	public List<AccreditationDTO> findAccreditationDTOs() throws ResourceNotFoundException {
 		List<SaleAccreditation> accreditations = accreditationsRepo.findAll();
 		
 		return Optional.of(accreditations.stream().map(AccreditationConverter::toDTO).toList())
@@ -35,7 +35,7 @@ public class AccreditationsService implements IAccreditationsService {
 	}
 	
 	@Override
-	public SaleAccreditation saveAccreditation(AccreditationDTO accreditationDTO) {
+	public SaleAccreditation saveAccreditation(AccreditationDTO accreditationDTO) throws MissingRequiredFieldException, ResourceNotFoundException {
 		if (accreditationDTO == null || accreditationDTO.getSellingPointId() == null || accreditationDTO.getAmount() == null) {
 			throw new MissingRequiredFieldException("Los atributos 'sellingPointId' e 'amount' son requeridos para asentar una acreditacion");
 		}

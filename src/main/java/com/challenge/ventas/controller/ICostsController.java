@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.challenge.ventas.exception.BusinessRuleException;
+import com.challenge.ventas.exception.MissingRequiredFieldException;
+import com.challenge.ventas.exception.ResourceNotFoundException;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +30,7 @@ public interface ICostsController {
 	        schema = @Schema(example = "Actualmente no se posee informacion sobre costos entre puntos de venta")
 	    ))
 	@Operation(summary = "Returns all the direct connections between different Selling Points.")
-	ResponseEntity<List<CostBetweenSellingPointsDTO>> getCostsBetweenSellingPoints();
+	ResponseEntity<List<CostBetweenSellingPointsDTO>> getCostsBetweenSellingPoints() throws ResourceNotFoundException;
 	
 	
 	@ApiResponse(responseCode = "200", description = "Cost found")
@@ -45,7 +48,7 @@ public interface ICostsController {
 	    ))
 	@Operation(summary = "Returns all the direct connections with the given Selling Point ID.")
 	ResponseEntity<List<CostBetweenSellingPointsDTO>> getDirectCostBetweenSellingPoints(
-			@Parameter(description = "ID of a Selling Point.", required = true) Long sellingPointId);
+			@Parameter(description = "ID of a Selling Point.", required = true) Long sellingPointId) throws ResourceNotFoundException, MissingRequiredFieldException;
 	
 	
 	@ApiResponse(responseCode = "200",
@@ -69,17 +72,17 @@ public interface ICostsController {
 	@Operation(summary = "Returns the direct connection between the two given Selling Point IDs.")
 	public ResponseEntity<String> getDirectCostBetweenSellingPoints(
 			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId1,
-			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId2);
+			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId2) throws ResourceNotFoundException, MissingRequiredFieldException;
 	
 	@Operation(summary = "Returns the shortest path between the two given Selling Point IDs. Indicates both the total cost and the path taken.")
 	public ResponseEntity<Map<String, Object>> getShortestCostBetweenSellingPoints(
 			@Parameter(description = "ID of a Selling Point", required = true) Long fromSellingPointId,
-			@Parameter(description = "ID of a Selling Point", required = true) Long toSellingPointId);
+			@Parameter(description = "ID of a Selling Point", required = true) Long toSellingPointId) throws ResourceNotFoundException, MissingRequiredFieldException;
 	
 	@Operation(summary = "Deletes the direct connection between the two given Selling Point IDs.")
 	ResponseEntity<String> deleteCostBetweenSellingPoints(
 			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId1,
-			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId2);
+			@Parameter(description = "ID of a Selling Point", required = true) Long sellingPointId2) throws BusinessRuleException, ResourceNotFoundException, MissingRequiredFieldException;
 	
 	@Operation(summary = "Creates a direct connection between the two given Selling Point IDs.")
 	ResponseEntity<String> createCostBetweenSellingPoints(
@@ -100,6 +103,6 @@ public interface ICostsController {
                                 "}"
 	        		)
 			    )
-			) CostBetweenSellingPointsDTO costDto);
+			) CostBetweenSellingPointsDTO costDto) throws MissingRequiredFieldException, BusinessRuleException, ResourceNotFoundException;
 
 }

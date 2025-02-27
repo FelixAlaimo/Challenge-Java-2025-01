@@ -35,7 +35,7 @@ class SellingPointServiceTest {
 	}
 	
 	@Test
-	public void testFindActiveSellingPointDTOs_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindActiveSellingPointDTOs_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException {
 		Mockito.when(sellingPointRepo.findActiveSellingPointDTOs()).thenReturn(List.of(new SellingPointDTO(34L, "trirty-four")));
 		List<SellingPointDTO> result = service.findActiveSellingPointDTOs();
 		Assertions.assertEquals(1, result.size());
@@ -53,7 +53,7 @@ class SellingPointServiceTest {
 	}
 	
 	@Test
-	public void testFindActiveSellingPointDTO_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindActiveSellingPointDTO_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException {
 		Mockito.when(sellingPointRepo.findActiveSellingPointDTO(22L)).thenReturn(Optional.of(new SellingPointDTO(22L, "twenty-two")));
 		SellingPointDTO result = service.findActiveSellingPointDTO(22L);
 		Assertions.assertEquals(22L, result.getId());
@@ -71,7 +71,7 @@ class SellingPointServiceTest {
 	}
 	
 	@Test
-	public void testFindActiveSellingPoint_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindActiveSellingPoint_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException {
 		Mockito.when(sellingPointRepo.findActiveSellingPoint(33L)).thenReturn(Optional.of(new SellingPoint(33L, "thirty-three")));
 		SellingPoint result = service.findActiveSellingPoint(33L);
 		Assertions.assertEquals(33L, result.getId());
@@ -89,7 +89,7 @@ class SellingPointServiceTest {
 	}
 	
 	@Test
-	public void testCreateSellingPoint_shouldReturnSellingPoint_whenCreatedOk() {
+	public void testCreateSellingPoint_shouldReturnSellingPoint_whenCreatedOk() throws MissingRequiredFieldException {
 		Mockito.when(sellingPointRepo.save(Mockito.any(SellingPoint.class))).thenAnswer(invocation -> invocation.getArgument(0));
 		
 		SellingPointDTO sellingPointDTO = new SellingPointDTO(null, "new-selling-point 1");
@@ -123,7 +123,7 @@ class SellingPointServiceTest {
 	
 	
 	@Test
-	public void testUpdateSellingPoint_ShouldReturnSellingPoint_WhenUpdatedOk() {
+	public void testUpdateSellingPoint_ShouldReturnSellingPoint_WhenUpdatedOk() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.when(sellingPointRepo.save(Mockito.any(SellingPoint.class))).thenAnswer(invocation -> invocation.getArgument(0));
 		
 		SellingPoint sellingPoint = new SellingPoint(44L, "forty-four");
@@ -177,7 +177,7 @@ class SellingPointServiceTest {
 	}
 	
 	@Test
-	public void testRemoveSellingPoint_ShouldReturnSellingPoint_WhenRemovedOk() {
+	public void testRemoveSellingPoint_ShouldReturnSellingPoint_WhenRemovedOk() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.when(sellingPointRepo.save(Mockito.any(SellingPoint.class))).thenAnswer(invocation -> invocation.getArgument(0));
 		
 		SellingPoint sellingPoint = new SellingPoint(77L, "seventy-seven");

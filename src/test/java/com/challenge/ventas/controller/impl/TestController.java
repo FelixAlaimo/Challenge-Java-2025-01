@@ -13,17 +13,17 @@ import com.challenge.ventas.exception.ResourceNotFoundException;
 public class TestController {
 
     @GetMapping("/not-found")
-    public void throwNotFound() {
+    public void throwNotFound() throws ResourceNotFoundException {
         throw new ResourceNotFoundException("Resource not found");
     }
 
     @GetMapping("/bad-request")
-    public void throwBadRequest() {
+    public void throwBadRequest() throws MissingRequiredFieldException {
         throw new MissingRequiredFieldException("Missing required field");
     }
 
     @GetMapping("/business-rule")
-    public void throwBusinessRule() {
+    public void throwBusinessRule() throws BusinessRuleException {
         throw new BusinessRuleException("Business rule violated");
     }
 

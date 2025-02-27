@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import utils.BasePojoTests;
+import com.challenge.ventas.test.utils.BasePojoTests;
 
 class PathResultDTOTest extends BasePojoTests {
 	

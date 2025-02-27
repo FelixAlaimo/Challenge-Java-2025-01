@@ -39,7 +39,7 @@ class AccreditationsServiceTest {
 	}
 	
 	@Test
-	public void testFindAccreditationDTOs_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindAccreditationDTOs_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException {
 		Mockito.when(accreditationsRepo.findAll()).thenReturn(List.of(
 				new SaleAccreditation(new SellingPoint(15L, "fifteen"), 25000L),
 				new SaleAccreditation(new SellingPoint(29L, "twenty-nine"), 48000L)));
@@ -66,7 +66,7 @@ class AccreditationsServiceTest {
 	
 	
 	@Test
-	public void testSaveAccreditation_shouldReturnNewEntity_whenPersistedCorrectly() {		
+	public void testSaveAccreditation_shouldReturnNewEntity_whenPersistedCorrectly() throws MissingRequiredFieldException, ResourceNotFoundException {		
 		AccreditationDTO accreditationDTO = new AccreditationDTO();
 		accreditationDTO.setSellingPointId(34L);
 		accreditationDTO.setAmount(40000L);

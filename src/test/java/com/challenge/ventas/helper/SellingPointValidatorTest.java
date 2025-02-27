@@ -1,4 +1,4 @@
-package com.challenge.ventas.utils;
+package com.challenge.ventas.helper;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class SellingPointValidatorTest {
 	}
 	
 	@Test
-	public void testValidateNullableField_shouldNotThrowException_WhenFieldIsPresent() {
+	public void testValidateNullableField_shouldNotThrowException_WhenFieldIsPresent() throws MissingRequiredFieldException {
 		validator.validateNullableField(183L, "FieldName");
 		Assertions.assertDoesNotThrow(() -> validator.validateNullableField(183L, "FieldName"));
 	}
