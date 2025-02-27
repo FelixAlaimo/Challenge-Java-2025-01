@@ -18,12 +18,12 @@ import org.springframework.data.domain.PageRequest;
 import com.challenge.ventas.exception.BusinessRuleException;
 import com.challenge.ventas.exception.MissingRequiredFieldException;
 import com.challenge.ventas.exception.ResourceNotFoundException;
+import com.challenge.ventas.helper.SellingPointValidator;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.model.CostBetweenSellingPoints;
 import com.challenge.ventas.persistence.model.SellingPoint;
 import com.challenge.ventas.persistence.repository.ICostBetweenSellingPointsRepository;
 import com.challenge.ventas.service.ISellingPointService;
-import com.challenge.ventas.utils.SellingPointValidator;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class CostsBetweenSellingPointsServiceTest {
@@ -46,7 +46,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testFindCostBetweenSellingPointsDTOs_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindCostBetweenSellingPointsDTOs_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException {
 		Mockito.when(costsRepo.findCostBetweenSellingPointsDTO()).thenReturn(List.of(
 				new CostBetweenSellingPointsDTO(1L, "one", 3L, "three", 10),
 				new CostBetweenSellingPointsDTO(2L, "two", 4L, "four", 15)));
@@ -74,7 +74,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testFindCostBetweenSellingPointsDTOById_shouldReturnResults_whenDataIsAvailable() {
+	public void testFindCostBetweenSellingPointsDTOById_shouldReturnResults_whenDataIsAvailable() throws ResourceNotFoundException, MissingRequiredFieldException {
 		Mockito.when(costsRepo.findCostBetweenSellingPointsDTO(1L)).thenReturn(List.of(
 				new CostBetweenSellingPointsDTO(1L, "one", 3L, "three", 10),
 				new CostBetweenSellingPointsDTO(2L, "two", 1L, "one", 11)));
@@ -94,7 +94,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testFindCostBetweenSellingPointsDTOById_shouldThrowException_whenPointDoesNotExist() {
+	public void testFindCostBetweenSellingPointsDTOById_shouldThrowException_whenPointDoesNotExist() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doThrow(new ResourceNotFoundException("not found warning 1")).when(sellingPointValidator).validateSellingPointExistence(2L, "id");
 		Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.findCostBetweenSellingPointsDTOById(2L);
@@ -113,7 +113,7 @@ class CostsBetweenSellingPointsServiceTest {
 	
 	
 	@Test
-	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldReturnResult_whenFound() {
+	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldReturnResult_whenFound() throws ResourceNotFoundException, MissingRequiredFieldException {
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(1L, 2L, PageRequest.of(0, 1))).thenReturn(List.of(
 				new CostBetweenSellingPoints(new SellingPoint(1L, "one"), new SellingPoint(2L, "two"), 7)));
@@ -128,14 +128,14 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldReturnZeroCost_whenFromAndToEquals() {
+	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldReturnZeroCost_whenFromAndToEquals() throws ResourceNotFoundException, MissingRequiredFieldException {
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		CostBetweenSellingPointsDTO cost = service.findDirectCostBetweenSellingPointsDTOByIds(1L, 1L);
 		Assertions.assertEquals(0, cost.getCost());
 	}
 	
 	@Test
-	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldThrowException_whenPointDoesNotExist() {
+	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldThrowException_whenPointDoesNotExist() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doThrow(new ResourceNotFoundException("not found warning 2")).when(sellingPointValidator).validateSellingPointExistence(2L, "id");
 		Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.findDirectCostBetweenSellingPointsDTOByIds(1L, 2L);
@@ -144,7 +144,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldThrowException_whenNoDataIsAvailable() {
+	public void testFindDirectCostBetweenSellingPointsDTOByIds_shouldThrowException_whenNoDataIsAvailable() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(1L, 2L, PageRequest.of(0, 1))).thenReturn(Collections.emptyList());
 		Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -154,7 +154,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testDeleteCostBetweenSellingPoints_shouldRemoveCostBetweenPoints_whenNoValidationErrorsOcurr() {
+	public void testDeleteCostBetweenSellingPoints_shouldRemoveCostBetweenPoints_whenNoValidationErrorsOcurr() throws BusinessRuleException, ResourceNotFoundException, MissingRequiredFieldException {
 		Mockito.reset(costsRepo);
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(3L, 4L, PageRequest.of(0, 1))).thenReturn(List.of(
@@ -170,7 +170,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenPointDoesNotExist() {
+	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenPointDoesNotExist() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doThrow(new ResourceNotFoundException("not found warning 3")).when(sellingPointValidator).validateSellingPointExistence(5L, "id");
 		Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.deleteCostBetweenSellingPoints(3L, 5L);
@@ -179,7 +179,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenFromAndToEquals() {
+	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenFromAndToEquals() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		Exception exception = Assertions.assertThrows(BusinessRuleException.class, () -> {
 			service.deleteCostBetweenSellingPoints(3L, 3L);
@@ -188,7 +188,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenNoDataIsAvailable() {
+	public void testDeleteCostBetweenSellingPoints_shouldThrowException_whenNoDataIsAvailable() throws MissingRequiredFieldException, ResourceNotFoundException {
 		Mockito.doNothing().when(sellingPointValidator).validateSellingPointExistence(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(6L, 8L, PageRequest.of(0, 1))).thenReturn(Collections.emptyList());
 		Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -198,7 +198,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testSaveCostBetweenSellingPoints_ShouldReturnOk_ifCostWasCreated() {
+	public void testSaveCostBetweenSellingPoints_ShouldReturnOk_ifCostWasCreated() throws MissingRequiredFieldException, BusinessRuleException, ResourceNotFoundException {
 		Mockito.reset(costsRepo);
 		Mockito.doNothing().when(sellingPointValidator).validateNullableField(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(14L, 22L, PageRequest.of(0, 1))).thenReturn(Collections.emptyList());
@@ -214,7 +214,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testSaveCostBetweenSellingPoints_ShouldReturnOk_ifCostWasUpdated() {
+	public void testSaveCostBetweenSellingPoints_ShouldReturnOk_ifCostWasUpdated() throws MissingRequiredFieldException, BusinessRuleException, ResourceNotFoundException {
 		Mockito.reset(costsRepo);
 		Mockito.doNothing().when(sellingPointValidator).validateNullableField(Mockito.anyLong(), Mockito.anyString());
 		Mockito.when(costsRepo.findCostBetweenSellingPoints(15L, 23L, PageRequest.of(0, 1)))
@@ -231,7 +231,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenMissingRequiredFields() {
+	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenMissingRequiredFields() throws MissingRequiredFieldException {
 		Exception exception = Assertions.assertThrows(MissingRequiredFieldException.class, () -> {
 			service.saveCostBetweenSellingPoints(null);
 		});
@@ -254,7 +254,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenFromAndToEquals() {
+	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenFromAndToEquals() throws MissingRequiredFieldException {
 		Mockito.doNothing().when(sellingPointValidator).validateNullableField(Mockito.anyLong(), Mockito.anyString());
 		
 		CostBetweenSellingPointsDTO costDto = new CostBetweenSellingPointsDTO(1L, "", 1L, "", 5);
@@ -265,7 +265,7 @@ class CostsBetweenSellingPointsServiceTest {
 	}
 	
 	@Test
-	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenAmountIsNegative() {
+	public void testSaveCostBetweenSellingPoints_ShouldThrowException_WhenAmountIsNegative() throws MissingRequiredFieldException {
 		Mockito.doNothing().when(sellingPointValidator).validateNullableField(Mockito.anyLong(), Mockito.anyString());
 		
 		CostBetweenSellingPointsDTO costDto = new CostBetweenSellingPointsDTO(1L, "", 2L, "", -10);

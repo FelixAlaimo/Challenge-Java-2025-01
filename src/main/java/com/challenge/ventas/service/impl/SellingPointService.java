@@ -27,7 +27,7 @@ public class SellingPointService implements ISellingPointService {
 	
 	@Override
 	@Cacheable(value = "sales:points", key = "'sales:points:active'")
-	public List<SellingPointDTO> findActiveSellingPointDTOs() {
+	public List<SellingPointDTO> findActiveSellingPointDTOs() throws ResourceNotFoundException {
 		List<SellingPointDTO> sellingPoints = sellingPointRepo.findActiveSellingPointDTOs();
 		if (CollectionUtils.isEmpty(sellingPoints)) {
 			throw new ResourceNotFoundException("Actualmente no se posee informacion sobre puntos de venta");
@@ -37,7 +37,7 @@ public class SellingPointService implements ISellingPointService {
 	
 	@Override
 	@Cacheable(value = "sales:point:dto", key = "#sellingPointId")
-	public SellingPointDTO findActiveSellingPointDTO(Long sellingPointId) {
+	public SellingPointDTO findActiveSellingPointDTO(Long sellingPointId) throws ResourceNotFoundException {
 		return sellingPointRepo
 				.findActiveSellingPointDTO(sellingPointId)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format("No se encontro el punto de venta ''{0}''", sellingPointId)));
@@ -45,14 +45,14 @@ public class SellingPointService implements ISellingPointService {
 	
 	@Override
 	@Cacheable(value = "sales:point", key = "#sellingPointId")
-	public SellingPoint findActiveSellingPoint(Long sellingPointId) {
+	public SellingPoint findActiveSellingPoint(Long sellingPointId) throws ResourceNotFoundException {
 		return sellingPointRepo.findActiveSellingPoint(sellingPointId)
 				.orElseThrow(() -> new ResourceNotFoundException(MessageFormat.format("No se encontro el punto de venta ''{0}''", sellingPointId)));
 	}
 	
 	@Override
 	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
-	public SellingPoint createSellingPoint(SellingPointDTO sellingPointDTO) {
+	public SellingPoint createSellingPoint(SellingPointDTO sellingPointDTO) throws MissingRequiredFieldException {
 		if (sellingPointDTO == null || StringUtils.isBlank(sellingPointDTO.getName())) {
 			throw new MissingRequiredFieldException("El atributo 'name' es requerido para crear el punto de venta");
 		}
@@ -62,7 +62,7 @@ public class SellingPointService implements ISellingPointService {
 	
 	@Override
 	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
-	public SellingPoint updateSellingPoint(SellingPointDTO sellingPointDTO) {
+	public SellingPoint updateSellingPoint(SellingPointDTO sellingPointDTO) throws MissingRequiredFieldException, ResourceNotFoundException {
 		if (sellingPointDTO == null || sellingPointDTO.getId() == null || StringUtils.isBlank(sellingPointDTO.getName())) {
 			throw new MissingRequiredFieldException("Los atributos 'name' e 'id' son requeridos para actualizar el punto de venta");
 		}
@@ -74,7 +74,7 @@ public class SellingPointService implements ISellingPointService {
 	
 	@Override
 	@CacheEvict(value = {"sales:costs", "sales:costs:to", "sales:cost:direct", "sales:cost:shortest", "sales:points", "sales:point:dto", "sales:point"}, allEntries = true)
-	public SellingPoint removeSellingPoint(Long sellingPointId) {
+	public SellingPoint removeSellingPoint(Long sellingPointId) throws MissingRequiredFieldException, ResourceNotFoundException {
 		if (sellingPointId == null) {
 			throw new MissingRequiredFieldException("El atributo 'id' es requerido para remover el punto de venta");
 		}

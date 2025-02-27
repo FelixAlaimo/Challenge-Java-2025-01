@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.challenge.ventas.controller.IAccreditationsController;
+import com.challenge.ventas.exception.MissingRequiredFieldException;
+import com.challenge.ventas.exception.ResourceNotFoundException;
 import com.challenge.ventas.persistence.dto.AccreditationDTO;
 import com.challenge.ventas.persistence.model.SaleAccreditation;
 import com.challenge.ventas.service.IAccreditationsService;
@@ -26,13 +28,13 @@ public class AccreditationsController implements IAccreditationsController {
 	
 	@GetMapping("/")
 	@Transactional(readOnly = true)
-    public ResponseEntity<List<AccreditationDTO>> getAccreditations() {
+    public ResponseEntity<List<AccreditationDTO>> getAccreditations() throws ResourceNotFoundException {
         return ResponseEntity.ok(accreditationsService.findAccreditationDTOs());
     }
 
 	@PostMapping("/")
 	@Transactional
-    public ResponseEntity<String> saveNewAccreditation(@RequestBody AccreditationDTO accreditationDTO) {
+    public ResponseEntity<String> saveNewAccreditation(@RequestBody AccreditationDTO accreditationDTO) throws MissingRequiredFieldException, ResourceNotFoundException {
 		SaleAccreditation accreditation = accreditationsService.saveAccreditation(accreditationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("Se asento correctamente la acreditacion: " + accreditation.toString()); 
     }

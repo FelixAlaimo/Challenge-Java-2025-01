@@ -3,7 +3,7 @@ package com.challenge.ventas.persistence.dto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import utils.BasePojoTests;
+import com.challenge.ventas.test.utils.BasePojoTests;
 
 class AccreditationDTOTest extends BasePojoTests {
 	

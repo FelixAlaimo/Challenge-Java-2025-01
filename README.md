@@ -1,4 +1,8 @@
 # Challenge-Java-2025-01
+Desarrollar una API en Java que:
+- Gestione en caché puntos de venta con CRUD vía HTTP.
+- Mantenga un caché de costos entre puntos de venta, permitiendo consulta, adición, eliminación y búsqueda del camino más económico.
+- Reciba "acreditaciones", enriqueciendo los datos con fecha y validando el punto de venta en caché.
 
 # De que consiste la app
 -	Spring boot app en java 17:

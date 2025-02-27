@@ -12,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.challenge.ventas.exception.MissingRequiredFieldException;
+import com.challenge.ventas.exception.ResourceNotFoundException;
+import com.challenge.ventas.helper.SellingPointValidator;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.dto.PathResultDTO;
-import com.challenge.ventas.utils.SellingPointValidator;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +29,7 @@ class PathFinderServiceTest {
 	private PathFinderService service;
 	
 	@Test
-	public void testFindShortestPath() {
+	public void testFindShortestPath_PathAndCalculatedCostShouldBeReturned_WhenExists() throws MissingRequiredFieldException, ResourceNotFoundException {
 		CostBetweenSellingPointsDTO cost1 = new CostBetweenSellingPointsDTO(1L, "", 2L, "", 2);
 		CostBetweenSellingPointsDTO cost2 = new CostBetweenSellingPointsDTO(1L, "", 3L, "", 3);
 		CostBetweenSellingPointsDTO cost3 = new CostBetweenSellingPointsDTO(1L, "", 4L, "", 11);
@@ -48,9 +50,17 @@ class PathFinderServiceTest {
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(5, result.getSellingPointsPath().size());
 		Assertions.assertEquals(26, result.getCost());
+	}
+	
+	@Test
+	public void testFindShortestPath_EmptyPathAndNegativeCostShouldBeReturned_WhenNotExists() throws MissingRequiredFieldException, ResourceNotFoundException {
+		CostBetweenSellingPointsDTO cost1 = new CostBetweenSellingPointsDTO(1L, "", 2L, "", 1);
+		CostBetweenSellingPointsDTO cost2 = new CostBetweenSellingPointsDTO(2L, "", 3L, "", 2);
+		CostBetweenSellingPointsDTO cost3 = new CostBetweenSellingPointsDTO(4L, "", 5L, "", 3);
+		CostBetweenSellingPointsDTO cost4 = new CostBetweenSellingPointsDTO(5L, "", 6L, "", 5);
 		
-		// no path
-		result = service.findShortestPath(1L, 111L, existingCosts);
+		List<CostBetweenSellingPointsDTO> existingCosts = Arrays.asList(cost1, cost2, cost3, cost4);
+		PathResultDTO result = service.findShortestPath(1L, 6L, existingCosts);
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(0, result.getSellingPointsPath().size());
 		Assertions.assertEquals(-1, result.getCost());

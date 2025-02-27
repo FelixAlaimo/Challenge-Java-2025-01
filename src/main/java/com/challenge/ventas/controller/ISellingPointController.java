@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.challenge.ventas.exception.MissingRequiredFieldException;
+import com.challenge.ventas.exception.ResourceNotFoundException;
 import com.challenge.ventas.persistence.dto.SellingPointDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,11 +20,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ISellingPointController {
 	
 	@Operation(summary = "Returns all active Selling Points.")
-	ResponseEntity<List<SellingPointDTO>> getAllSellingPoints();
+	ResponseEntity<List<SellingPointDTO>> getAllSellingPoints() throws ResourceNotFoundException;
 
 	@Operation(summary = "Returns a Selling Point with the given Selling Point ID.")
 	ResponseEntity<SellingPointDTO> getSellingPoint(
-			@Parameter(description = "", required = true) Long sellingPointId);
+			@Parameter(description = "", required = true) Long sellingPointId) throws ResourceNotFoundException;
 
 	@Operation(summary = "Creates a mew Selling Point.")
 	ResponseEntity<String> createSellingPoint(
@@ -37,7 +39,7 @@ public interface ISellingPointController {
                         value = "{\n \"name\": \"La Pampa\",\n}"
 	        		)
 			    )
-			) SellingPointDTO sellingPointDTO);
+			) SellingPointDTO sellingPointDTO) throws MissingRequiredFieldException;
 
 	@Operation(summary = "Updates an existing Selling Point.")
 	ResponseEntity<String> updateSellingPoint(
@@ -55,10 +57,10 @@ public interface ISellingPointController {
                                 "}"
 	        		)
 			    )
-			) SellingPointDTO sellingPointDTO);
+			) SellingPointDTO sellingPointDTO) throws MissingRequiredFieldException, ResourceNotFoundException;
 
 	@Operation(summary = "Removes a selling point with the given Selling Point ID.")
 	ResponseEntity<String> removeSellingPoint(
-			@Parameter(description = "", required = true) Long sellingPointId);
+			@Parameter(description = "", required = true) Long sellingPointId) throws MissingRequiredFieldException, ResourceNotFoundException;
 
 }

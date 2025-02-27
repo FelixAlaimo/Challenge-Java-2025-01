@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.challenge.ventas.exception.MissingRequiredFieldException;
+import com.challenge.ventas.exception.ResourceNotFoundException;
+import com.challenge.ventas.helper.SellingPointValidator;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.dto.PathGraphDTO;
 import com.challenge.ventas.persistence.dto.PathNodeDTO;
 import com.challenge.ventas.persistence.dto.PathResultDTO;
 import com.challenge.ventas.service.IPathFinderService;
-import com.challenge.ventas.utils.SellingPointValidator;
 
 @Service
 public class PathFinderService implements IPathFinderService {
@@ -27,7 +29,7 @@ public class PathFinderService implements IPathFinderService {
 	
 	@Override
 	@Cacheable(value = "sales:cost:shortest", key = "#start + ':' + #end")
-	public PathResultDTO findShortestPath(Long fromSellingPointId, Long toSellingPointId, List<CostBetweenSellingPointsDTO> existingCosts) {
+	public PathResultDTO findShortestPath(Long fromSellingPointId, Long toSellingPointId, List<CostBetweenSellingPointsDTO> existingCosts) throws MissingRequiredFieldException, ResourceNotFoundException {
 		
 		sellingPointValidator.validateSellingPointExistence(fromSellingPointId, "fromSellingPointId");
 		sellingPointValidator.validateSellingPointExistence(toSellingPointId, "toSellingPointId");

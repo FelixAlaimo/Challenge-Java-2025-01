@@ -14,6 +14,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice(basePackages = {"com.challenge.ventas.controller.impl"})
 public class GlobalExceptionHandler {
 	
+	private static final String STATUS_KEY = "status";
+	private static final String MESSAGE_KEY = "message";
+	private static final String ERROR_KEY = "error";
+	
 	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(ResourceNotFoundException.class)
@@ -33,16 +37,16 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler({NumberFormatException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Map<String, String>> handleNumberFormatException(NumberFormatException ex) {
-        logger.error("Invalid number format error: {}", ex.getMessage());
-
-        Map<String, String> response = new HashMap<>();
-        response.put("error", "Invalid number format");
-        response.put("message", "Se esperaba un valor numerico pero no fue provisto correctamente.");
-
-        return ResponseEntity.badRequest().body(response);
+    	logger.error("Invalid number format error: {}", ex.getMessage());
+    	
+    	Map<String, String> response = new HashMap<>();
+    	response.put(ERROR_KEY, "Invalid number format");
+    	response.put(MESSAGE_KEY, "Se esperaba un valor numerico pero no fue provisto correctamente.");
+    	
+    	return ResponseEntity.badRequest().body(response);
     }
     
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, IllegalStateException.class})
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
     	logger.error("Unhandled exception occurred: {}", ex.getMessage(), ex);
         return buildErrorResponse("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,8 +54,8 @@ public class GlobalExceptionHandler {
 
     private ResponseEntity<Map<String, String>> buildErrorResponse(String message, HttpStatus status) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", message);
-        errorResponse.put("status", status.toString());
+        errorResponse.put(ERROR_KEY, message);
+        errorResponse.put(STATUS_KEY, status.toString());
         return ResponseEntity.status(status).body(errorResponse);
     }
 

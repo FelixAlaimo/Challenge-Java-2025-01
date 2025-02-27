@@ -11,17 +11,23 @@ public class CostBetweenSellingPointsConverter {
 	}
 	
 	public static CostBetweenSellingPointsDTO toDTO(CostBetweenSellingPoints costEntity) {
-        CostBetweenSellingPointsDTO dto = null;
-        if (costEntity != null && costEntity.getId() != null) {
-        	CostBetweenSellingPointsPk costPk = costEntity.getId();
-        	dto = new CostBetweenSellingPointsDTO();
-        	dto.setFromSellingPointId(costPk.getFromSellingPoint().getId());
-        	dto.setFromSellingPointName(costPk.getFromSellingPoint().getName());
-        	dto.setToSellingPointId(costPk.getToSellingPoint().getId());
-        	dto.setToSellingPointName(costPk.getToSellingPoint().getName());
-        	dto.setCost(costEntity.getAmount());
-        }
-        return dto;
+		if (costEntity == null || costEntity.getId() == null) {
+	        return null;
+	    }
+
+	    CostBetweenSellingPointsPk costPk = costEntity.getId();
+	    if (costPk.getFromSellingPoint() == null || costPk.getToSellingPoint() == null) {
+	        throw new IllegalStateException("Falla en la integridad de los datos de esta operacion.");
+	    }
+
+	    CostBetweenSellingPointsDTO dto = new CostBetweenSellingPointsDTO();
+	    dto.setFromSellingPointId(costPk.getFromSellingPoint().getId());
+	    dto.setFromSellingPointName(costPk.getFromSellingPoint().getName());
+	    dto.setToSellingPointId(costPk.getToSellingPoint().getId());
+	    dto.setToSellingPointName(costPk.getToSellingPoint().getName());
+	    dto.setCost(costEntity.getAmount());
+
+	    return dto;
     }
 
 }

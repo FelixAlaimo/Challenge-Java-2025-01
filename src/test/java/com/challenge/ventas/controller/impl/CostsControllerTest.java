@@ -24,12 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.challenge.ventas.exception.BusinessRuleException;
 import com.challenge.ventas.exception.MissingRequiredFieldException;
 import com.challenge.ventas.exception.ResourceNotFoundException;
+import com.challenge.ventas.helper.CostsFormatter;
 import com.challenge.ventas.persistence.dto.CostBetweenSellingPointsDTO;
 import com.challenge.ventas.persistence.dto.PathResultDTO;
-import com.challenge.ventas.persistence.dto.SellingPointDTO;
 import com.challenge.ventas.service.ICostsBetweenSellingPointsService;
 import com.challenge.ventas.service.IPathFinderService;
-import com.challenge.ventas.service.ISellingPointService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(value = CostsController.class)
@@ -43,10 +42,10 @@ class CostsControllerTest {
 	private ICostsBetweenSellingPointsService costsBetweenSellingPointsService;
 	
 	@MockitoBean
-	private ISellingPointService sellingPointService;
+	private IPathFinderService pathFinderService;
 	
 	@MockitoBean
-	private IPathFinderService pathFinderService;
+	private CostsFormatter costsFormatter;
 	
 	
 	@Test
@@ -144,24 +143,22 @@ class CostsControllerTest {
 	
 	@Test
 	public void testGetShortestCostBetweenSellingPoints_ShouldReturnOk_WhenPathIsFound() throws Exception {
-		Mockito.when(sellingPointService.findActiveSellingPointDTO(2L)).thenReturn(new SellingPointDTO(2L, "two"));
-		Mockito.when(sellingPointService.findActiveSellingPointDTO(6L)).thenReturn(new SellingPointDTO(6L, "six"));
-		Mockito.when(sellingPointService.findActiveSellingPointDTO(4L)).thenReturn(new SellingPointDTO(4L, "four"));
-		Mockito.when(sellingPointService.findActiveSellingPointDTO(9L)).thenReturn(new SellingPointDTO(9L, "nine"));
-		Mockito.when(sellingPointService.findActiveSellingPointDTO(7L)).thenReturn(new SellingPointDTO(7L, "seven"));
-		
-		List<Long> ruta = List.of(2L, 6L, 4L, 9L, 7L);
-		Mockito.when(pathFinderService.findShortestPath(2L, 5L, new ArrayList<>())).thenReturn(new PathResultDTO(ruta, 60));
+		List<Long> ruta = List.of(2L, 4L, 7L, 5L);
+		String[] formattedPathPoints = new String[] {"anyFormat2", "anyFormat4", "anyFormat7", "anyFormat5"};
+		PathResultDTO pathTakenResultDto = new PathResultDTO(ruta, 60);
+		Mockito.when(pathFinderService.findShortestPath(2L, 5L, new ArrayList<>())).thenReturn(pathTakenResultDto);
+		Mockito.when(costsFormatter.formatPathPointsWithName(pathTakenResultDto)).thenReturn(formattedPathPoints);
 		
 		mockMvc.perform(get("/costs/shortest/2/5"))
 	        .andExpect(status().isOk())
 	        .andExpect(jsonPath("$.resultado").value("Se encontro una ruta entre ambos puntos con costo minimo de: 60"))
-            .andExpect(jsonPath("$.ruta").value("two (2) -> six (6) -> four (4) -> nine (9) -> seven (7)"));
+            .andExpect(jsonPath("$.ruta").value(String.join(" -> ", formattedPathPoints)));
 	}
 	
 	@Test
 	public void testGetShortestCostBetweenSellingPoints_ShouldReturnOk_WhenNoPathIsFound() throws Exception {
 		Mockito.when(pathFinderService.findShortestPath(4L, 7L, new ArrayList<>())).thenReturn(new PathResultDTO());
+		Mockito.when(costsFormatter.formatPathPointsWithName(Mockito.any(PathResultDTO.class))).thenReturn(null);
 		mockMvc.perform(get("/costs/shortest/4/7"))
 	        .andExpect(status().isOk())
 	        .andExpect(jsonPath("$.resultado").value("No se encontro una ruta entre ambos puntos"))
@@ -173,7 +170,6 @@ class CostsControllerTest {
 	        .andExpect(jsonPath("$.resultado").value("No se encontro una ruta entre ambos puntos"))
             .andExpect(jsonPath("$.ruta").value("N/A"));
 	}
-	
 	
 	@Test
 	public void testDeleteCostBetweenSellingPoints_ShouldReturnNotFound_WhenPointDoesNotExist() throws Exception {

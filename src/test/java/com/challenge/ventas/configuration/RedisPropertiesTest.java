@@ -2,7 +2,7 @@ package com.challenge.ventas.configuration;
 
 import org.junit.jupiter.api.Test;
 
-import utils.BasePojoTests;
+import com.challenge.ventas.test.utils.BasePojoTests;
 
 class RedisPropertiesTest extends BasePojoTests {
 	
